@@ -18,7 +18,8 @@
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
     <modules>
-        <module>common</module>
+      <module>common</module>
+      <module>ingestion</module>
     </modules>
 
     <properties>
