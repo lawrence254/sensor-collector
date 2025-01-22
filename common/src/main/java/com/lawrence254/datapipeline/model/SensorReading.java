@@ -25,7 +25,7 @@ public class SensorReading{
     private double value;
     Map<String, String> metadata;
     private SensorType sensorType;
-    private MetaData metaData;
+    private LocationMetaData locationMetaData;
 
     public enum SensorType {
         TEMPERATURE,
@@ -43,7 +43,7 @@ public class SensorReading{
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    private class MetaData {
+    private class LocationMetaData {
         private String city;
         private Double longitude;
         private Double latitude;

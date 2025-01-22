@@ -6,16 +6,15 @@ import com.lawrence254.datapipeline.service.IngestionService;
 import com.lawrence254.datapipeline.util.MetricsUtils;
 import com.lawrence254.datapipeline.util.ValidationUtils;
 import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.prometheus.PrometheusMeterRegistry;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/sensors")
@@ -25,6 +24,7 @@ public class SensorReadingController {
     private final IngestionService ingestionService;
     private final ValidationUtils validationUtils;
     private final MetricsUtils metricsUtils;
+    private final PrometheusMeterRegistry registry;
 
     @PostMapping("/readings")
     @Timed(value = "ingestion.reading.process", description = "Time taken to process a sensor reading")
@@ -70,5 +70,9 @@ public class SensorReadingController {
         }
     }
 
+    @GetMapping("/metrics")
+    public String metrics(){
+        return registry.scrape();
+    }
 
 }
