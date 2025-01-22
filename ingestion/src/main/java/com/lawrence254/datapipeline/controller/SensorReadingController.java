@@ -1,5 +1,6 @@
 package com.lawrence254.datapipeline.controller;
 
+import com.lawrence254.datapipeline.exception.DataPipelineException;
 import com.lawrence254.datapipeline.model.SensorReading;
 import com.lawrence254.datapipeline.service.IngestionService;
 import com.lawrence254.datapipeline.util.MetricsUtils;
@@ -8,6 +9,8 @@ import io.micrometer.core.annotation.Timed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,9 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/sensors")
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class SensorReadingController {
-
+    private static final Logger logger = LoggerFactory.getLogger(SensorReadingController.class);
     private final IngestionService ingestionService;
     private final ValidationUtils validationUtils;
     private final MetricsUtils metricsUtils;
@@ -36,7 +38,8 @@ public class SensorReadingController {
                         System.currentTimeMillis()-startTime,
                         "validation_failure"
                 );
-                return ResponseEntity.badRequest().body("Invalid Sensor Reading");
+                throw new DataPipelineException(DataPipelineException.ErrorCode.INVALID_SENSOR_DATA,
+                        "Invalid sensor data for sensor: "+reading.getSensorID());
             }
 
             ingestionService.processReading(reading);
@@ -53,13 +56,17 @@ public class SensorReadingController {
                     reading.getSensorID()
             );
             return ResponseEntity.accepted().build();
-        }catch (Exception e){
+        }catch (DataPipelineException e){
+            logger.error("Data pipeline error during ingestation: {}", e.getMessage(),e);
             metricsUtils.incrementErrorCount(
                     "reading_ingestion",
                     System.currentTimeMillis()-startTime,
                     "system_error"
             );
-            throw e;
+            throw new DataPipelineException(
+                    DataPipelineException.ErrorCode.PROCESSING_ERROR,
+                    "Failed to process sensor reading: "+e.getMessage(),e
+            );
         }
     }
 
