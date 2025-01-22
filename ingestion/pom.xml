@@ -11,5 +11,24 @@
 
     <artifactId>ingestion</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.lawrence254.datapipeline</groupId>
+            <artifactId>pipeline-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
