@@ -2,6 +2,7 @@ package com.lawrence254.datapipeline.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +20,12 @@ public class SensorReading{
     @NotNull
     private String sensorID;
     @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss:SSSZ", timezone = "UTC+3")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss:SSSZ", timezone = "UTC")
     private Instant timestamp;
     private double value;
     Map<String, String> metadata;
     private SensorType sensorType;
+    private MetaData metaData;
 
     public enum SensorType {
         TEMPERATURE,
@@ -35,5 +37,15 @@ public class SensorReading{
         CO2,
         PM1,
         PM10
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private class MetaData {
+        private String city;
+        private Double longitude;
+        private Double latitude;
     }
 }
