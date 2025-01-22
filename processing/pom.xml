@@ -11,6 +11,20 @@
 
     <artifactId>processing</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.lawrence254.datapipeline</groupId>
+            <artifactId>pipeline-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+    </dependencies>
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
