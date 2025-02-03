@@ -38,14 +38,4 @@ public class SensorReading{
         PM1,
         PM10
     }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    private class LocationMetaData {
-        private String city;
-        private Double longitude;
-        private Double latitude;
-    }
 }
