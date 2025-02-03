@@ -22,6 +22,8 @@
       <module>ingestion</module>
       <module>processing</module>
       <module>storage</module>
+      <module>api</module>
+      <module>monitoring</module>
     </modules>
 
     <properties>

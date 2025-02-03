@@ -8,14 +8,18 @@
         <outputRelativeToContentRoot value="true" />
         <module name="processing" />
         <module name="storage" />
+        <module name="api" />
         <module name="ingestion" />
+        <module name="monitoring" />
         <module name="pipeline-common" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api" options="-parameters" />
       <module name="ingestion" options="-parameters" />
+      <module name="monitoring" options="-parameters" />
       <module name="pipeline-common" options="-parameters" />
       <module name="processing" options="-parameters" />
       <module name="storage" options="-parameters" />
