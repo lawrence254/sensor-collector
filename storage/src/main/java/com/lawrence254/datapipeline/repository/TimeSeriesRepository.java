@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawrence254.datapipeline.model.AggregatedReading;
 import com.lawrence254.datapipeline.model.LocationMetaData;
 import com.lawrence254.datapipeline.model.SensorReading;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -22,34 +23,53 @@ public class TimeSeriesRepository {
     private final ObjectMapper objectMapper;
 
     private static final String CREATE_HYPERTABLE_SQL = """
-            CREATE TABLE IF NOT EXISTS sensor_readings (
-                time TIMESTAMPTZ NOT NULL,
-                sensor_id TEXT NOT NULL,
-                 value DOUBLE PRECISION NOT NULL,
-                 sensor_type TEXT NOT NULL,
-                 metadata JSONB,
-                 city TEXT,
-                 longitude DOUBLE PRECISION,
-                 latitude DOUBLE PRECISION,
-            );
-            
-            SELECT create_hypertable('sensor_readings', 'time');
-            
-            CREATE INDEX IF NOT EXISTS sensor_readings_idx ON sensor_readings(sensor_id, time DESC);
-            
-            CREATE TABLE IF NOT EXISTS aggregated_readings (
-            time TIMESTAMPTZ NOT NULL,
-            window_end TIMESTAMPTZ NOT NULL,
-            session_id TEXT NOT NULL,
-            avg_value DOUBLE PRECISION NOT NULL,
-            min_value DOUBLE PRECISION NOT NULL,
-            max_value DOUBLE PRECISION NOT NULL,
-            std_dev DOUBLE PRECISION NOT NULL,
-            sample_count BIGINT NOT NULL,
-            sensor_type TEXT NOT NULL);
-            
-            SELECT create_hypertable('aggregated_readings', 'time');
-            """;
+    CREATE TABLE IF NOT EXISTS sensor_readings (
+                                                                        time TIMESTAMPTZ NOT NULL,
+                                                                        sensor_id TEXT NOT NULL,
+                                                                        value DOUBLE PRECISION NOT NULL,
+                                                                        sensor_type TEXT NOT NULL,
+                                                                        metadata JSONB,
+                                                                        city TEXT,
+                                                                        longitude DOUBLE PRECISION,
+                                                                        latitude DOUBLE PRECISION
+                                                                    );
+                                                                   \s
+                                                                    -- Only create hypertable if it doesn't exist
+                                                                    DO $$
+                                                                    BEGIN
+                                                                        IF NOT EXISTS (
+                                                                            SELECT FROM timescaledb_information.hypertables
+                                                                            WHERE hypertable_name = 'sensor_readings'
+                                                                        ) THEN
+                                                                            PERFORM create_hypertable('sensor_readings', 'time');
+                                                                        END IF;
+                                                                    END $$;
+                                                                   \s
+                                                                    CREATE INDEX IF NOT EXISTS sensor_readings_idx ON sensor_readings(sensor_id, time DESC);
+                                                                   \s
+                                                                    CREATE TABLE IF NOT EXISTS aggregated_readings (
+                                                                        time TIMESTAMPTZ NOT NULL,
+                                                                        window_end TIMESTAMPTZ NOT NULL,
+                                                                        session_id TEXT NOT NULL,
+                                                                        avg_value DOUBLE PRECISION NOT NULL,
+                                                                        min_value DOUBLE PRECISION NOT NULL,
+                                                                        max_value DOUBLE PRECISION NOT NULL,
+                                                                        std_dev DOUBLE PRECISION NOT NULL,
+                                                                        sample_count BIGINT NOT NULL,
+                                                                        sensor_type TEXT NOT NULL
+                                                                    );
+                                                                   \s
+                                                                    -- Only create hypertable if it doesn't exist
+                                                                    DO $$
+                                                                    BEGIN
+                                                                        IF NOT EXISTS (
+                                                                            SELECT FROM timescaledb_information.hypertables
+                                                                            WHERE hypertable_name = 'aggregated_readings'
+                                                                        ) THEN
+                                                                            PERFORM create_hypertable('aggregated_readings', 'time');
+                                                                        END IF;
+                                                                    END $$;
+""";
 
     private static final String INSERT_SENSOR_READING = """
             INSERT INTO sensor_readings(
@@ -137,24 +157,30 @@ public class TimeSeriesRepository {
         };
     }
 
+    public void createHyperTableSql(){
+        jdbcTemplate.execute(CREATE_HYPERTABLE_SQL);
+    }
+
     public void setupContinuousAggregation(){
         jdbcTemplate.execute("""
-            CREATE MATERIALIZED VIEW IF NOT EXISTS sensor_readings_hourly with (timescaledb.continuous) AS
-                   SELECT time_bucket('1 hour', time) AS bucket,
-                          sensor_id,
-                          sensor_type,
-                          AVG(value) as avg_value,
-                          MIN(value) as min_value,
-                          Max(value) as max_value,
-                          COUNT(*) as sample_count,
-                          FROM sensor_readings
-                   GROUP BY bucket,sensor_id, sensor_type
-                   WITH NO DATA;
+        CREATE MATERIALIZED VIEW IF NOT EXISTS sensor_readings_hourly 
+        WITH (timescaledb.continuous) AS
+        SELECT 
+            time_bucket('1 hour', time) AS bucket,
+            sensor_id,
+            sensor_type,
+            AVG(value) as avg_value,
+            MIN(value) as min_value,
+            MAX(value) as max_value,
+            COUNT(*) as sample_count
+        FROM sensor_readings
+        GROUP BY bucket, sensor_id, sensor_type
+        WITH NO DATA;
 
-            SELECT add_continuous_aggregate_policy('sensor_readings_hourly',
-                   start_offset => INTERVAL '1 day',
-                   end_offset => INTERVAL '1 hour',
-                   schedule_interval => INTERVAL '1 hour');
-""");
+        SELECT add_continuous_aggregate_policy('sensor_readings_hourly',
+            start_offset => INTERVAL '1 day',
+            end_offset => INTERVAL '1 hour',
+            schedule_interval => INTERVAL '1 hour');
+    """);
     }
 }

@@ -11,9 +11,9 @@ public class DatabaseConfig {
     @Bean
     public HikariDataSource dataSource(){
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://localhost:5432/sensordb");
+        config.setJdbcUrl("jdbc:postgresql://localhost:5665/sensordb");
         config.setUsername("postgres");
-        config.setPassword("postgres");
+        config.setPassword("password");
         return new HikariDataSource(config);
     }
 

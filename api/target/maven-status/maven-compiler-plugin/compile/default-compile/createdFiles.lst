@@ -1,0 +1,7 @@
+com/lawrence254/datapipeline/dto/LocationMetadataDTO.class
+com/lawrence254/datapipeline/dto/SensorReadingDTO.class
+com/lawrence254/datapipeline/websocket/WebSocketConfig.class
+com/lawrence254/datapipeline/Main.class
+com/lawrence254/datapipeline/websocket/SensorDataWebsocketHandler.class
+com/lawrence254/datapipeline/graphql/SensorDataResolver.class
+com/lawrence254/datapipeline/dto/AggregatedReadingDTO.class

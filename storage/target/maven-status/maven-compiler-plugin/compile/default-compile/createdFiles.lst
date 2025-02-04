@@ -1,0 +1,10 @@
+com/lawrence254/datapipeline/interfaces/AggregatedReadingRepository.class
+com/lawrence254/datapipeline/Main.class
+com/lawrence254/datapipeline/service/StorageService.class
+com/lawrence254/datapipeline/service/TimeSeriesService.class
+com/lawrence254/datapipeline/config/DatabaseConfig.class
+com/lawrence254/datapipeline/model/AggregatedReadingEntity.class
+com/lawrence254/datapipeline/model/SensorReadingEntity.class
+com/lawrence254/datapipeline/repository/TimeSeriesRepository.class
+com/lawrence254/datapipeline/interfaces/SensorReadingRepository.class
+com/lawrence254/datapipeline/model/LocationMetadataEmbeddable.class

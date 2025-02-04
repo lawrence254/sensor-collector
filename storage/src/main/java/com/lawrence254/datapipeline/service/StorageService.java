@@ -55,11 +55,15 @@ public class StorageService {
     }
 
     public List<SensorReadingEntity> getReadingForSensor(String sensorId, Instant start, Instant end){
-        return sensorReadingRepository.findSensorAndTimestampBetween(sensorId, start,end);
+        return sensorReadingRepository.findBySensorIdAndTimestampBetween(sensorId, start,end);
 
     }
 
     public List<AggregatedReadingEntity> getAggregatedReadings(String sessionId, Instant start, Instant end){
         return aggregatedReadingRepository.findBySessionIdAndWindowStartBetween(sessionId, start, end);
+    }
+
+    public void checkConnection() {
+
     }
 }

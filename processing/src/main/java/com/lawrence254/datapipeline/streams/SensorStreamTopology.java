@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 
 @Component
-@AllArgsConstructor
 @RequiredArgsConstructor
 public class SensorStreamTopology {
     private final AnalyticsService analyticService;

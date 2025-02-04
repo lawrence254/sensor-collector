@@ -1,0 +1,6 @@
+com/lawrence254/datapipeline/service/IngestionService.class
+com/lawrence254/datapipeline/controller/SensorReadingController.class
+com/lawrence254/datapipeline/exception/IngestionException$1.class
+com/lawrence254/datapipeline/config/IngestionConfig.class
+com/lawrence254/datapipeline/Main.class
+com/lawrence254/datapipeline/exception/IngestionException.class

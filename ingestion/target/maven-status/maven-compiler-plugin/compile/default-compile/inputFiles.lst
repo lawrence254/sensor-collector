@@ -1,0 +1,5 @@
+/Users/lawrence/Documents/Projects/modular-pipeline/ingestion/src/main/java/com/lawrence254/datapipeline/Main.java
+/Users/lawrence/Documents/Projects/modular-pipeline/ingestion/src/main/java/com/lawrence254/datapipeline/config/IngestionConfig.java
+/Users/lawrence/Documents/Projects/modular-pipeline/ingestion/src/main/java/com/lawrence254/datapipeline/controller/SensorReadingController.java
+/Users/lawrence/Documents/Projects/modular-pipeline/ingestion/src/main/java/com/lawrence254/datapipeline/exception/IngestionException.java
+/Users/lawrence/Documents/Projects/modular-pipeline/ingestion/src/main/java/com/lawrence254/datapipeline/service/IngestionService.java

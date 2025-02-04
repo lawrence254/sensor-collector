@@ -1,0 +1,10 @@
+/Users/lawrence/Documents/Projects/modular-pipeline/storage/src/main/java/com/lawrence254/datapipeline/Main.java
+/Users/lawrence/Documents/Projects/modular-pipeline/storage/src/main/java/com/lawrence254/datapipeline/config/DatabaseConfig.java
+/Users/lawrence/Documents/Projects/modular-pipeline/storage/src/main/java/com/lawrence254/datapipeline/interfaces/AggregatedReadingRepository.java
+/Users/lawrence/Documents/Projects/modular-pipeline/storage/src/main/java/com/lawrence254/datapipeline/interfaces/SensorReadingRepository.java
+/Users/lawrence/Documents/Projects/modular-pipeline/storage/src/main/java/com/lawrence254/datapipeline/model/AggregatedReadingEntity.java
+/Users/lawrence/Documents/Projects/modular-pipeline/storage/src/main/java/com/lawrence254/datapipeline/model/LocationMetadataEmbeddable.java
+/Users/lawrence/Documents/Projects/modular-pipeline/storage/src/main/java/com/lawrence254/datapipeline/model/SensorReadingEntity.java
+/Users/lawrence/Documents/Projects/modular-pipeline/storage/src/main/java/com/lawrence254/datapipeline/repository/TimeSeriesRepository.java
+/Users/lawrence/Documents/Projects/modular-pipeline/storage/src/main/java/com/lawrence254/datapipeline/service/StorageService.java
+/Users/lawrence/Documents/Projects/modular-pipeline/storage/src/main/java/com/lawrence254/datapipeline/service/TimeSeriesService.java
