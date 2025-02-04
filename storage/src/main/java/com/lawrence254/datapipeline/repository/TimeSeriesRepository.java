@@ -163,24 +163,29 @@ public class TimeSeriesRepository {
 
     public void setupContinuousAggregation(){
         jdbcTemplate.execute("""
-        CREATE MATERIALIZED VIEW IF NOT EXISTS sensor_readings_hourly 
-        WITH (timescaledb.continuous) AS
-        SELECT 
-            time_bucket('1 hour', time) AS bucket,
-            sensor_id,
-            sensor_type,
-            AVG(value) as avg_value,
-            MIN(value) as min_value,
-            MAX(value) as max_value,
-            COUNT(*) as sample_count
-        FROM sensor_readings
-        GROUP BY bucket, sensor_id, sensor_type
-        WITH NO DATA;
-
-        SELECT add_continuous_aggregate_policy('sensor_readings_hourly',
-            start_offset => INTERVAL '1 day',
-            end_offset => INTERVAL '1 hour',
-            schedule_interval => INTERVAL '1 hour');
+            DO $$\s
+                                                            BEGIN
+                                                           \s
+                                                            CREATE MATERIALIZED VIEW IF NOT EXISTS sensor_readings_hourly
+                                                            WITH (timescaledb.continuous) AS
+                                                            SELECT\s
+                                                                time_bucket('1 hour', time) AS bucket,
+                                                                sensor_id,
+                                                                sensor_type,
+                                                                AVG(value) as avg_value,
+                                                                MIN(value) as min_value,
+                                                                MAX(value) as max_value,
+                                                                COUNT(*) as sample_count
+                                                            FROM sensor_readings
+                                                            GROUP BY bucket, sensor_id, sensor_type;
+                                                        
+                                                            PERFORM add_continuous_aggregate_policy('sensor_readings_hourly',
+                                                                start_offset => INTERVAL '1 day',
+                                                                end_offset => INTERVAL '1 hour',
+                                                                schedule_interval => INTERVAL '1 hour',
+                                                                if_not_exists => true);
+                                                               \s
+                                                            END $$;
     """);
     }
 }
