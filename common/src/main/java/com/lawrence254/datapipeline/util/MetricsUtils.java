@@ -2,17 +2,16 @@ package com.lawrence254.datapipeline.util;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class MetricsUtils {
     private final MeterRegistry meterRegistry;
 
-    public MetricsUtils(MeterRegistry meterRegistry) {
-        this.meterRegistry = meterRegistry;
-    }
 
     public void recordProcessingTime(String operationName, long milliseconds, String sensorId) {
         meterRegistry.timer("processing_time",

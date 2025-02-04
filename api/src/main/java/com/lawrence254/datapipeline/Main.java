@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(
         scanBasePackages = {
-                "com.lawrence254.datapipeline.api",
+                "com.lawrence254.datapipeline.*",
+                "com.lawrence254.datapipeline.config",
                 "com.lawrence254.datapipeline.common",
                 "com.lawrence254.datapipeline.ingestion",
                 "com.lawrence254.datapipeline.monitoring",
