@@ -68,9 +68,6 @@ modular-pipeline/
 4. Push to the branch
 5. Create a Pull Request
 
-## 🛠 Setup
-Setup instructions can be found here: [Setup instructions](SETUP.md)
-
 ## 📝 License
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
