@@ -11,6 +11,7 @@ public class AggregatedReadingDTO {
     private Instant windowEnd;
     private double minValue;
     private double maxValue;
+    private double avgValue;
     private double stdDev;
     private long sampleCount;
     private String sensorType;
